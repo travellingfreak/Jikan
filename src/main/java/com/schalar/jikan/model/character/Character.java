@@ -9,9 +9,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-/*
- *  TODO: Fix \n formatting issue.
- */
 @Generated
 public class Character extends Model {
 

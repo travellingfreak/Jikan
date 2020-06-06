@@ -2,6 +2,7 @@ package com.schalar.jikan.helper;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.json.JSONObject;
 
 import java.io.Serializable;
 import java.net.URI;
@@ -30,9 +31,13 @@ public class Client {
 
             HttpResponse<String> response = httpClient.sendAsync(builder.build(), HttpResponse.BodyHandlers.ofString()).get();
 
+            JSONObject jsonObject = new JSONObject(response.body());
+            if (jsonObject.has("type") && jsonObject.has("message") && jsonObject.has("error") && jsonObject.has("status")) {
+                //TODO: Handle HTTP Errors
+            }
+
             return response.body();
         } catch (InterruptedException | URISyntaxException | ExecutionException e) {
-            e.printStackTrace();
             return null;
         }
     }

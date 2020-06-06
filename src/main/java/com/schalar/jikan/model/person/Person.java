@@ -10,9 +10,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-/*
- *  TODO: Fix \n formatting issue.
- */
 @Generated
 public class Person extends Model {
 
@@ -36,7 +33,7 @@ public class Person extends Model {
             jsonArray.forEach(o1 -> list.add(new PublishedManga((JSONObject) o1)));
             return list;
         });
-        addCustomFunctionForField("birthday", o -> LocalDateTime.parse(((String) o).replace("+00:00", "")));
+        addCustomFunctionForField("birthday", o -> o == JSONObject.NULL ? null : LocalDateTime.parse(((String) o).replace("+00:00", "")));
     }
 
     private Integer malId;

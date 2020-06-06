@@ -73,12 +73,6 @@ public class MangaSearchRequest implements Request {
         return String.format("/search/manga?%s", this.query);
     }
 
-    private void println(Object... objects) {
-        for (Object o : objects) {
-            System.out.println(o);
-        }
-    }
-
     public MangaSearchRequest setQuery(@Nullable String query) {
         this.query = query;
         this.query = this.query != null ? this.query : "";

@@ -1,6 +1,13 @@
 package com.schalar.jikan.helper;
 
+import org.json.JSONObject;
+
 import java.io.File;
+import java.io.InputStream;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.Random;
 
 @SuppressWarnings("unused")
 public final class Constants {
@@ -176,5 +183,29 @@ public final class Constants {
     public static final String USER_MANGA_LIST_DROPPED = "dropped";
     public static final String USER_MANGA_LIST_PTR = "plantoread";
     public static final String USER_MANGA_LIST_PLAN_TO_READ = USER_MANGA_LIST_PTR;
+
+    public static Integer getRandomInteger(String type, boolean nsfw) {
+        try {
+            URL u = new URL("https://raw.githubusercontent.com/seanbreckenridge/mal-id-cache/master/cache/" + type + "_cache.json");
+            InputStream in = u.openStream();
+            String s = new String(in.readAllBytes(), StandardCharsets.UTF_8);
+            JSONObject object = new JSONObject(s);
+
+            if (object.has("sfw")) {
+                List<Object> list = object.getJSONArray("sfw").toList();
+
+                if (nsfw)
+                    list.addAll(object.getJSONArray("nsfw").toList());
+
+                return (Integer) list.get(new Random().nextInt(list.size()) + 1);
+            } else {
+                List<Object> list = object.getJSONArray("ids").toList();
+                return (Integer) list.get(new Random().nextInt(list.size()) + 1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -1;
+        }
+    }
 
 }

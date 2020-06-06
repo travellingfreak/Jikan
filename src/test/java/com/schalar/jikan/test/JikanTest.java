@@ -34,6 +34,7 @@ import com.schalar.jikan.model.top.TopPerson;
 import com.schalar.jikan.model.user.*;
 import com.schalar.jikan.request.anime.*;
 import com.schalar.jikan.request.character.CharacterPicturesRequest;
+import com.schalar.jikan.request.character.CharacterRandomRequest;
 import com.schalar.jikan.request.character.CharacterRequest;
 import com.schalar.jikan.request.club.ClubRequest;
 import com.schalar.jikan.request.club.UserListRequest;
@@ -42,6 +43,7 @@ import com.schalar.jikan.request.genre.MangaGenreRequest;
 import com.schalar.jikan.request.magazine.MagazineRequest;
 import com.schalar.jikan.request.manga.*;
 import com.schalar.jikan.request.person.PersonPicturesRequest;
+import com.schalar.jikan.request.person.PersonRandomRequest;
 import com.schalar.jikan.request.person.PersonRequest;
 import com.schalar.jikan.request.producer.ProducerRequest;
 import com.schalar.jikan.request.schedule.ScheduleRequest;
@@ -59,32 +61,21 @@ import com.schalar.jikan.request.user.*;
 import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.concurrent.TimeUnit;
+import java.util.Objects;
 
 public class JikanTest extends Assertions {
 
     private static JikanClient jikan;
 
     public static void assertContains(String expected, @Nullable String actual) {
-        assertNotNull(actual);
-        assertTrue(actual.contains(expected));
+        assertTrue(Objects.requireNonNull(actual).contains(expected));
     }
 
     @BeforeAll
     public static void setUp() {
         jikan = new JikanClient();
-    }
-
-    @BeforeEach
-    public void handle() {
-        try {
-            TimeUnit.SECONDS.sleep(2); // This allows all tests to run without RateLimiting.
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
     @Test
@@ -546,6 +537,42 @@ public class JikanTest extends Assertions {
         var response =  jikan.getMangaNews(request);
         assertEquals(Article.class, response.get(0).getClass());
         assertNotEquals(0, response.size());
+
+        System.out.println(response.toString());
+    }
+
+    @Test
+    public void it_gets_random_anime() {
+        var request = new AnimeRandomRequest(true);
+        var response = jikan.getAnime(request);
+        assertEquals(Anime.class, response.getClass());
+
+        System.out.println(response.toString());
+    }
+
+    @Test
+    public void it_gets_random_character() {
+        var request = new CharacterRandomRequest(true);
+        var response = jikan.getCharacter(request);
+        assertEquals(Character.class, response.getClass());
+
+        System.out.println(response.toString());
+    }
+
+    @Test
+    public void it_gets_random_manga() {
+        var request = new MangaRandomRequest(true);
+        var response = jikan.getManga(request);
+        assertEquals(Manga.class, response.getClass());
+
+        System.out.println(response.toString());
+    }
+
+    @Test
+    public void it_gets_random_person() {
+        var request = new PersonRandomRequest(true);
+        var response = jikan.getPerson(request);
+        assertEquals(Person.class, response.getClass());
 
         System.out.println(response.toString());
     }

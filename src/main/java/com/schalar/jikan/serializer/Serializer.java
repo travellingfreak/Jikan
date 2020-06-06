@@ -20,8 +20,6 @@ public class Serializer<T extends Model> {
 
         Map<String, Object> data = invokeObject(body);
 
-        //TODO: HTTP Error Handling
-
         try {
             T t = clazz.getDeclaredConstructor().newInstance();
 

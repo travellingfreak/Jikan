@@ -11,9 +11,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/*
- *  TODO: Fix \n formatting issue.
- */
 @Generated
 public class Manga extends Model {
 
