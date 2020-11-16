@@ -1,6 +1,7 @@
 package com.schalar.jikan.model.anime;
 
 import com.schalar.jikan.model.Model;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.json.JSONObject;
@@ -28,12 +29,16 @@ public class EpisodeListItem extends Model {
     private final String forumUrl;
 
     public EpisodeListItem(@NotNull JSONObject jsonObject) {
-        this.titleJapanese = jsonObject.getString("title_japanese");
+        this.titleJapanese = jsonObject.optString("title_japanese", null);
         this.forumUrl = jsonObject.getString("forum_url");
-        this.aired = LocalDateTime.parse(jsonObject.getString("aired").replace("+00:00", ""));
+        if (jsonObject.isNull("aired")) {
+            this.aired = null;
+        } else {
+            this.aired = LocalDateTime.parse(jsonObject.getString("aired").replace("+00:00", ""));
+        }
         this.episodeId = jsonObject.getInt("episode_id");
-        this.titleRomanji = jsonObject.getString("title_romanji");
-        this.videoUrl = jsonObject.getString("video_url");
+        this.titleRomanji = jsonObject.optString("title_romanji", null);
+        this.videoUrl = jsonObject.optString("video_url", null);
         this.filler = jsonObject.getBoolean("filler");
         this.recap = jsonObject.getBoolean("recap");
         this.title = jsonObject.getString("title");
@@ -70,6 +75,7 @@ public class EpisodeListItem extends Model {
         return recap;
     }
 
+    @Nullable
     public String getVideoUrl() {
         return videoUrl;
     }
